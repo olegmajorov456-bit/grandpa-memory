@@ -2,84 +2,29 @@ import { useEffect, useState } from "react";
 import Admin from "./Admin";
 import { loadContent } from "./content";
 
-const DEFAULT_TIMELINE = [
-  { year: "1950", title: "Начало", text: "Рождение Николая Николаевича Сметанина в Иванове." },
-  { year: "1975", title: "«Меридиан»", text: "Основание студенческого трио вместе с Надеждой Лукашевич и Владимиром Ситановым." },
-  { year: "1978", title: "Профессиональная сцена", text: "«Меридиан» становится профессиональным коллективом." },
-  { year: "1980", title: "Таривердиев", text: "Начало сотрудничества с композитором Микаэлом Таривердиевым." },
-  { year: "1981", title: "Конкурс", text: "«Меридиан» становится лауреатом I премии Всесоюзного конкурса молодых исполнителей советской песни." },
-  { year: "1995", title: "Звание", text: "Николаю Николаевичу присвоено звание Заслуженного артиста Российской Федерации." },
-  { year: "2025", title: "Память", text: "26 июля Николай Николаевич ушёл из жизни в Иванове." },
-];
+const DEFAULT_TIMELINE=[{year:"1950",title:"Начало",text:"Рождение Николая Николаевича Сметанина в Иванове."},{year:"1975",title:"«Меридиан»",text:"Основание студенческого трио вместе с Надеждой Лукашевич и Владимиром Ситановым."},{year:"1978",title:"Профессиональная сцена",text:"«Меридиан» становится профессиональным коллективом."},{year:"1980",title:"Таривердиев",text:"Начало сотрудничества с композитором Микаэлом Таривердиевым."},{year:"1981",title:"Конкурс",text:"«Меридиан» становится лауреатом I премии Всесоюзного конкурса молодых исполнителей советской песни."},{year:"1995",title:"Звание",text:"Николаю Николаевичу присвоено звание Заслуженного артиста Российской Федерации."},{year:"2025",title:"Память",text:"26 июля Николай Николаевич ушёл из жизни в Иванове."}];
+const gallery=[["Портрет","Николай Николаевич","photo-portrait"],["Меридиан","Сцена и музыка","photo-stage"],["Семья","Домашние воспоминания","photo-family"],["Архив","Фотографии и документы","photo-archive"],["Концерты","Годы на сцене","photo-concert"],["Люди","Те, кто был рядом","photo-people"]];
 
-const gallery = [
-  ["Портрет","Николай Николаевич","photo-portrait"],
-  ["Меридиан","Сцена и музыка","photo-stage"],
-  ["Семья","Домашние воспоминания","photo-family"],
-  ["Архив","Фотографии и документы","photo-archive"],
-  ["Концерты","Годы на сцене","photo-concert"],
-  ["Люди","Те, кто был рядом","photo-people"],
-];
+function Header({active}){const links=[["life","Жизнь"],["meridian","Меридиан"],["archive","Архив"],["memories","Воспоминания"]];return <header className="site-header"><a className="brand" href="#top">НН<span>·</span>ПАМЯТЬ</a><nav>{links.map(([id,label])=><a className={active===id?"active":""} key={id} href={"#"+id}>{label}</a>)}</nav><a className="header-year" href="#timeline">1950—2025</a></header>}
 
-function Header({active}) {
-  const links=[["life","Жизнь"],["meridian","Меридиан"],["archive","Архив"],["memories","Воспоминания"]];
-  return <header className="site-header">
-    <a className="brand" href="#top">НН<span>·</span>ПАМЯТЬ</a>
-    <nav>{links.map(([id,label])=><a className={active===id?"active":""} key={id} href={"#"+id}>{label}</a>)}</nav>
-    <a className="header-year" href="#timeline">1950—2025</a>
-  </header>;
-}
-function Hero({content}) {
-  return <section className="hero" id="top">
-    <div className="hero-grid"/><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/>
-    <div className="hero-top"><span>СЕМЕЙНЫЙ АРХИВ / 01</span><span>ИВАНОВО · 1950—2025</span></div>
-    <div className="hero-title reveal"><p className="eyebrow">{content.hero.eyebrow}</p><h1>{content.hero.title}<br/><em>{content.hero.titleAccent}</em></h1><p className="hero-lead">{content.hero.lead}</p></div>
-    <div className="hero-bottom"><span className="hero-location">ИВАНОВО · РОССИЯ</span><a className="scroll-cue" href="#life"><span>Листать историю</span><b>↓</b></a><span className="hero-index">01 / 07</span></div>
-  </section>;
-}
-function SectionTitle({number,children,light=false}) {
-  return <div className={"section-title "+(light?"light":"")}><span className="section-number">{number}</span><h2>{children}</h2></div>;
-}
-function Life({content}) {
-  return <section className="section life" id="life"><SectionTitle number="02">О человеке</SectionTitle>
-    <div className="two-col"><p className="big-copy">{content.life.lead}</p><div className="side-copy"><p>{content.life.text1}</p><p>{content.life.text2}</p></div></div>
-    <div className="fact-row"><div><span>ГОД РОЖДЕНИЯ</span><strong>1950</strong></div><div><span>ГОРОД</span><strong>Иваново</strong></div><div><span>СФЕРА</span><strong>Музыка</strong></div><div><span>«МЕРИДИАН»</span><strong>с 1975</strong></div></div>
-  </section>;
-}
-function Meridian({timeline}) {
-  return <section className="section meridian" id="meridian"><div className="meridian-glow"/>
-    <SectionTitle number="03" light>Музыка · «Меридиан»</SectionTitle>
-    <div className="meridian-intro"><p className="big-copy">Музыка была большой частью его жизни.</p><p>В 1975 году появился «Меридиан». Коллектив стал профессиональным в 1978 году, а с 1980 года начал сотрудничать с Микаэлом Таривердиевым. Николай Николаевич был музыкальным руководителем, вокалистом, автором песен и аранжировок.</p></div>
-    <div className="vinyl-wrap"><div className="vinyl"><div className="vinyl-label">НН</div></div><div><span className="mini-label">ЗВУКОВОЙ АРХИВ</span><h3>Музыка, которую можно услышать снова</h3><p>Сюда позже добавим реальные записи, песни и фрагменты выступлений.</p></div></div>
-    <div className="timeline" id="timeline">{timeline.slice(1,6).map(item=><article className="timeline-item" key={item.year}><span>{item.year}</span><b>{item.title}</b><p>{item.text}</p></article>)}</div>
-  </section>;
-}
-function Archive() {
-  const [selected,setSelected]=useState(null);
-  return <section className="section archive" id="archive"><SectionTitle number="04">Архив</SectionTitle><p className="lead">Не декоративная галерея, а место для настоящих фотографий, афиш, документов, видео и музыки.</p>
-    <div className="archive-grid">{gallery.map(([title,caption,className],i)=><button className="archive-card" key={title} onClick={()=>setSelected({title,caption,className})}><div className={"placeholder "+className}><span>{"0"+(i+1)}</span><i>↗</i></div><h3>{title}</h3><p>{caption}</p></button>)}</div>
-    {selected&&<div className="lightbox" onClick={()=>setSelected(null)}><div className={"lightbox-image "+selected.className} onClick={e=>e.stopPropagation()}><button onClick={()=>setSelected(null)}>×</button><div><span>АРХИВ</span><h3>{selected.title}</h3><p>{selected.caption}</p></div></div></div>}
-  </section>;
-}
-function Quote({content}){return <section className="quote-section"><div className="quote-mark">“</div><blockquote>{content.quote}</blockquote><span>КНИГА ПАМЯТИ</span></section>;}
-function AudioDemo(){
-  const [playing,setPlaying]=useState(false);
-  return <section className="audio-section"><div className="audio-inner"><div><span className="mini-label">06 / ГОЛОС</span><h2>Оставим место<br/><em>для его голоса.</em></h2></div><button className={"audio-button "+(playing?"playing":"")} onClick={()=>setPlaying(!playing)}>{playing?"Ⅱ":"▶"}</button><div className="audio-track"><div className="wave">{Array.from({length:38}).map((_,i)=><i key={i} style={{height:(20+((i*17)%48))+"%"}}/>)}</div><div className="audio-meta"><span>{playing?"Демо воспроизведение":"Аудиозапись будет добавлена"}</span><span>00:00</span></div></div></div></section>;
-}
-function Memories(){
-  const [memories,setMemories]=useState([]),[name,setName]=useState(""),[message,setMessage]=useState("");
-  function addMemory(e){e.preventDefault();if(!name.trim()||!message.trim())return;setMemories(x=>[{name:name.trim(),message:message.trim()},...x]);setName("");setMessage("");}
-  return <section className="section memories" id="memories"><SectionTitle number="07">Воспоминания</SectionTitle><div className="two-col memories-top"><p className="big-copy">Самая важная часть архива — голоса людей, которые его знали.</p><p>В будущем здесь можно сделать полноценную книгу памяти: рассказы родственников, друзей и коллег, фотографии и аудиосообщения.</p></div><form className="memory-form" onSubmit={addMemory}><input value={name} onChange={e=>setName(e.target.value)} placeholder="Ваше имя"/><textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Воспоминание..."/><button type="submit">Добавить историю <span>→</span></button></form><div className="memory-list">{memories.length===0?<article className="memory-empty">Первые воспоминания появятся здесь.</article>:memories.map((item,i)=><article className="memory" key={i}><b>{item.name}</b><p>{item.message}</p></article>)}</div></section>;
-}
-function Footer({content}){return <footer><div><strong>НИКОЛАЙ НИКОЛАЕВИЧ СМЕТАНИН</strong><span>1950 — 2025</span></div><p>{content.footer}</p></footer>;}
+function Hero({content}){return <section className="hero" id="top"><div className="hero-grid"/><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/><div className="hero-top"><span>СЕМЕЙНЫЙ АРХИВ / 01</span><span>ИВАНОВО · 1950—2025</span></div><div className="hero-title reveal"><p className="eyebrow">{content.hero.eyebrow}</p><h1>{content.hero.title}<br/><em>{content.hero.titleAccent}</em></h1><p className="hero-lead">{content.hero.lead}</p></div><div className="hero-bottom"><span>ИВАНОВО · РОССИЯ</span><a className="scroll-cue" href="#life"><span>Листать историю</span><b>↓</b></a><span className="hero-index">01 / 07</span></div></section>}
+function SectionTitle({number,children,light=false}){return <div className={"section-title "+(light?"light":"")}><span className="section-number">{number}</span><h2>{children}</h2></div>}
+function Life({content}){return <section className="section life" id="life"><SectionTitle number="02">О человеке</SectionTitle><div className="two-col"><p className="big-copy">{content.life.lead}</p><div className="side-copy"><p>{content.life.text1}</p><p>{content.life.text2}</p></div></div><div className="fact-row"><div><span>ГОД РОЖДЕНИЯ</span><strong>1950</strong></div><div><span>ГОРОД</span><strong>Иваново</strong></div><div><span>СФЕРА</span><strong>Музыка</strong></div><div><span>«МЕРИДИАН»</span><strong>с 1975</strong></div></div></section>}
+function Meridian({timeline}){return <section className="section meridian" id="meridian"><div className="meridian-glow"/><SectionTitle number="03" light>Музыка · «Меридиан»</SectionTitle><div className="meridian-intro"><p className="big-copy">Музыка была большой частью его жизни.</p><p>В 1975 году появился «Меридиан». Коллектив стал профессиональным в 1978 году, а с 1980 года начал сотрудничать с Микаэлом Таривердиевым. Николай Николаевич был музыкальным руководителем, вокалистом, автором песен и аранжировок.</p></div><div className="vinyl-wrap"><div className="vinyl"><div className="vinyl-label">НН</div></div><div><span className="mini-label">ЗВУКОВОЙ АРХИВ</span><h3>Музыка, которую можно услышать снова</h3><p>Сюда позже добавим реальные записи, песни и фрагменты выступлений.</p></div></div><div className="timeline" id="timeline">{timeline.slice(1,6).map(item=><article className="timeline-item" key={item.year}><span>{item.year}</span><b>{item.title}</b><p>{item.text}</p></article>)}</div></section>}
+function Archive(){const[selected,setSelected]=useState(null);return <section className="section archive" id="archive"><SectionTitle number="04">Архив</SectionTitle><p className="lead">Не декоративная галерея, а место для настоящих фотографий, афиш, документов, видео и музыки.</p><div className="archive-grid">{gallery.map(([title,caption,className],i)=><button className="archive-card" key={title} onClick={()=>setSelected({title,caption,className})}><div className={"placeholder "+className}><span>{"0"+(i+1)}</span><i>↗</i></div><h3>{title}</h3><p>{caption}</p></button>)}</div>{selected&&<div className="lightbox" onClick={()=>setSelected(null)}><div className={"lightbox-image "+selected.className} onClick={e=>e.stopPropagation()}><button onClick={()=>setSelected(null)}>×</button><div><span>АРХИВ</span><h3>{selected.title}</h3><p>{selected.caption}</p></div></div></div>}</section>}
+function Quote({content}){return <section className="quote-section"><div className="quote-mark">“</div><blockquote>{content.quote}</blockquote><span>КНИГА ПАМЯТИ</span></section>}
+function AudioDemo(){const[playing,setPlaying]=useState(false);return <section className="audio-section"><div className="audio-inner"><div><span className="mini-label">06 / ГОЛОС</span><h2>Оставим место<br/><em>для его голоса.</em></h2></div><button className={"audio-button "+(playing?"playing":"")} onClick={()=>setPlaying(!playing)}>{playing?"Ⅱ":"▶"}</button><div className="audio-track"><div className="wave">{Array.from({length:38}).map((_,i)=><i key={i} style={{height:(20+((i*17)%48))+"%"}}/>)}</div><div className="audio-meta"><span>{playing?"Демо воспроизведение":"Аудиозапись будет добавлена"}</span><span>00:00</span></div></div></div></section>}
+function Memories(){const[memories,setMemories]=useState([]),[name,setName]=useState(""),[message,setMessage]=useState("");function addMemory(e){e.preventDefault();if(!name.trim()||!message.trim())return;setMemories(x=>[{name:name.trim(),message:message.trim()},...x]);setName("");setMessage("")}return <section className="section memories" id="memories"><SectionTitle number="07">Воспоминания</SectionTitle><div className="two-col memories-top"><p className="big-copy">Самая важная часть архива — голоса людей, которые его знали.</p><p>В будущем здесь можно сделать полноценную книгу памяти: рассказы родственников, друзей и коллег, фотографии и аудиосообщения.</p></div><form className="memory-form" onSubmit={addMemory}><input value={name} onChange={e=>setName(e.target.value)} placeholder="Ваше имя"/><textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Воспоминание..."/><button type="submit">Добавить историю <span>→</span></button></form><div className="memory-list">{memories.length===0?<article className="memory-empty">Первые воспоминания появятся здесь.</article>:memories.map((item,i)=><article className="memory" key={i}><b>{item.name}</b><p>{item.message}</p></article>)}</div></section>}
+function Footer({content}){return <footer><div><strong>НИКОЛАЙ НИКОЛАЕВИЧ СМЕТАНИН</strong><span>1950 — 2025</span></div><p>{content.footer}</p></footer>}
+
 export default function App(){
-  const [route,setRoute]=useState(window.location.hash);
-  useEffect(()=>{const f=()=>setRoute(window.location.hash);window.addEventListener("hashchange",f);return()=>window.removeEventListener("hashchange",f)},[]);
-  if(route==="#admin") return <Admin/>;
-  const content=loadContent(),timeline=content.timeline||DEFAULT_TIMELINE;
-  const [active,setActive]=useState("top");
-  useEffect(()=>{const ids=["top","life","meridian","archive","memories"];const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)}),{rootMargin:"-35% 0px -55% 0px"});ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});return()=>obs.disconnect()},[]);
-  useEffect(()=>{document.documentElement.style.setProperty("--page-height",Math.max(1,document.documentElement.scrollHeight-window.innerHeight)+"px");const on=()=>document.documentElement.style.setProperty("--scroll",window.scrollY);window.addEventListener("scroll",on,{passive:true});window.addEventListener("resize",on);return()=>{window.removeEventListener("scroll",on);window.removeEventListener("resize",on)}},[]);
-  useEffect(()=>{const els=document.querySelectorAll(".reveal");const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});els.forEach(el=>obs.observe(el));return()=>obs.disconnect()},[]);
-  return <><div className="progress"><span/></div><Header active={active}/><main><Hero content={content}/><Life content={content}/><Meridian timeline={timeline}/><Archive/><Quote content={content}/><AudioDemo/><Memories/></main><Footer content={content}/></>;
+ const[route,setRoute]=useState(window.location.hash),[active,setActive]=useState("top");
+ useEffect(()=>{const f=()=>setRoute(window.location.hash);window.addEventListener("hashchange",f);return()=>window.removeEventListener("hashchange",f)},[]);
+ const isAdmin=route==="#admin";
+ useEffect(()=>{if(isAdmin)return;const ids=["top","life","meridian","archive","memories"];const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)setActive(e.target.id)}),{rootMargin:"-35% 0px -55% 0px"});ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});return()=>obs.disconnect()},[isAdmin]);
+ useEffect(()=>{if(isAdmin)return;const els=document.querySelectorAll(".reveal");const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});els.forEach(el=>obs.observe(el));return()=>obs.disconnect()},[isAdmin]);
+ useEffect(()=>{if(isAdmin)return;const set=()=>{document.documentElement.style.setProperty("--page-height",Math.max(1,document.documentElement.scrollHeight-window.innerHeight)+"px");document.documentElement.style.setProperty("--scroll",window.scrollY)};set();window.addEventListener("scroll",set,{passive:true});window.addEventListener("resize",set);return()=>{window.removeEventListener("scroll",set);window.removeEventListener("resize",set)}},[isAdmin]);
+ if(isAdmin)return <Admin/>;
+ const content=loadContent(),timeline=content.timeline||DEFAULT_TIMELINE;
+ return <><div className="progress"><span/></div><Header active={active}/><main><Hero content={content}/><Life content={content}/><Meridian timeline={timeline}/><Archive/><Quote content={content}/><AudioDemo/><Memories/></main><Footer content={content}/></>;
 }
