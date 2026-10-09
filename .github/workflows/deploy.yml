@@ -30,13 +30,14 @@ jobs:
       - name: Build Vite site
         run: npm run build
 
-      - name: Deploy dist to Beget via FTP
+      - name: Deploy dist to Beget via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          protocol: ftp
+          protocol: ftps
+          security: strict
           local-dir: ./dist/
           server-dir: /grandpa-memory/public_html/
