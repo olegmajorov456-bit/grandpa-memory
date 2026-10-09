@@ -40,4 +40,4 @@ jobs:
           protocol: ftps
           security: strict
           local-dir: ./dist/
-          server-dir: /grandpa-memory/public_html/
+          server-dir: ./
